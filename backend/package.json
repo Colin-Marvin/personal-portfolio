@@ -1,7 +1,7 @@
 {
   "name": "ix-blog-app",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "dev": "nodemon ./src/index.js",
     "start": "node ./src/index.js",
@@ -11,6 +11,10 @@
   "license": "ISC",
   "description": "Backend server for blog app",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.1"
   }
 }
