@@ -1,7 +1,6 @@
-/* getCategories from the same api endpoint */
 const getCategories = async () => {
   try {
-    const res = await fetch(
+    const data = await fetch(
       "https://ix-blog-app-2d5c689132cd.herokuapp.com/api/categories",
       {
         method: "GET",
@@ -10,16 +9,16 @@ const getCategories = async () => {
         },
       }
     );
-    const categoryAPIdata = await res.json();
-    return categoryAPIdata.data;
+    const categoryAPIData = await data.json();
+    console.log(categoryAPIData.message);
+    return categoryAPIData.data;
   } catch (err) {
-    console.log(err);
     throw new Error(err);
   }
 };
 
-const categoriesService = {
+const categoryService = {
   getCategories,
 };
 
-export default categoriesService;
+export default categoryService;

@@ -3,58 +3,90 @@ import Navbar from "../../components/Navbar";
 import Heading from "../../components/Heading";
 import BlogList from "../../components/BlogList";
 import Footer from "../../components/Footer";
-import CategoriesList from "../../components/CategoryList";
 
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import "./index.css";
 
 import blogService from "../../services/blogService";
+import categoryService from "../../services/categoryService";
 
 export default function BlogsPage() {
-  const { categoryIdParam } = useParams();
+  const { categoryId } = useParams();
 
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [blogs, setBlogs] = useState();
+  const [categories, setCategories] = useState();
 
-  // Fetch blogs based on category
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    setLoading(true);
-    const fetchBlogs = async () => {
-      try {
-        // Adjust the URL or function according to your API structure
-        // This assumes your API can filter blogs by category ID
-        const result = await blogService.getBlogsByCategory(categoryIdParam);
-        setBlogs(result);
-        setLoading(false);
-      } catch (err) {
-        console.error("Failed to fetch blogs:", err);
-        setError("Failed to fetch blogs");
-        setLoading(false);
-      }
+    const fetchData = async () => {
+      const blogsRes = await blogService.getBlogsByCategoryId(categoryId);
+      const categoriesRes = await categoryService.getCategories();
+
+      setBlogs(blogsRes);
+      setCategories(categoriesRes);
+      setLoading(false);
     };
 
-    fetchBlogs();
-  }, [categoryIdParam]);
+    fetchData();
+  }, [categoryId]);
+
+  const CategoriesList = ({ categoryId }) => {
+    if (!categories && !categories?.length) {
+      return null;
+    }
+
+    return categories.map((category) => {
+      return categoryId === category.id ? (
+        <Link
+          className="link"
+          key={category.id}
+          to={"/blogs/" + category.id}
+          style={{ color: "blue" }}
+          onClick={() => setLoading(true)}
+        >
+          <p key={category.id}>{category.title}</p>
+        </Link>
+      ) : (
+        <Link
+          className="link"
+          key={category.id}
+          to={"/blogs/" + category.id}
+          style={{ color: "black" }}
+          onClick={() => setLoading(true)}
+        >
+          <p key={category.id}>{category.title}</p>
+        </Link>
+      );
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <>
       <Navbar />
       <div className="container">
         <Heading />
         <div className="scroll-menu">
-          {/* Passing down the handler to change category */}
-          <CategoriesList categoryId={categoryIdParam} />
+          <CategoriesList categoryId={categoryId} />
         </div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <p className="page-subtitle">Blog Posts</p>
         </div>
-        {loading && <p>Loading...</p>}
-        {error && <p>Error: {error}</p>}
-        {!loading && !error && <BlogList blogPosts={blogs} />}
+        <BlogList blogPosts={blogs} />
       </div>
+
       <Footer />
-    </div>
+    </>
   );
 }

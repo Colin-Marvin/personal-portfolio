@@ -1,6 +1,6 @@
 const getBlogs = async () => {
   try {
-    const res = await fetch(
+    const data = await fetch(
       "https://ix-blog-app-2d5c689132cd.herokuapp.com/api/blogs",
       {
         method: "GET",
@@ -9,46 +9,35 @@ const getBlogs = async () => {
         },
       }
     );
-    const blogAPIdata = await res.json();
-    return blogAPIdata.data;
-  } catch (err) {
-    console.log(err);
+    const blogsApiData = await data.json();
+    return blogsApiData.data;
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
-const getBlogsByCategory = async (categoryId) => {
+const getBlogsByCategoryId = async (categoryId) => {
   try {
-    // Construct the URL with the category ID as a URL segment
-    const url =
-      `https://ix-blog-app-2d5c689132cd.herokuapp.com/api/blogs/category/` +
-      categoryId
-        ? categoryId
-        : null;
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const blogAPIdata = await response.json();
-    return blogAPIdata.data;
-  } catch (err) {
-    console.error("Error fetching blogs by category:", err);
-    console.error("Category ID:", categoryId);
-    console.error("Error output:", err);
-    throw err;
+    const data = await fetch(
+      "https://ix-blog-app-2d5c689132cd.herokuapp.com/api/blogs/category/" +
+        categoryId,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const blogsApiData = await data.json();
+    return blogsApiData.data;
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
 const blogService = {
   getBlogs,
-  getBlogsByCategory,
+  getBlogsByCategoryId,
 };
 
 export default blogService;

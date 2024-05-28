@@ -1,14 +1,19 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+
+import "./App.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import HomePage from "./pages/Home";
 import BlogsPage from "./pages/Blogs";
-import CategoriesPage from "./pages/Categories";
+import BlogPage from "./pages/Blog";
 
-const router = createBrowserRouter([
+const routes = [
   {
-    path: "/",
+    path: "",
     element: <HomePage />,
   },
   {
@@ -16,14 +21,16 @@ const router = createBrowserRouter([
     element: <HomePage />,
   },
   {
-    path: "/categories",
-    element: <CategoriesPage />,
-  },
-  {
     path: "/blogs/:categoryId?",
     element: <BlogsPage />,
   },
-]);
+  {
+    path: "/blog/:blogId",
+    element: <BlogPage />,
+  },
+];
+const router = createBrowserRouter(routes);
+
 function App() {
   return <RouterProvider router={router} />;
 }
