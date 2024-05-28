@@ -1,0 +1,45 @@
+/* Main navbar styling */
+.navbar {
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Vertically center items in the navbar */
+  justify-content: space-between; /* Space between logo and navigation links */
+  padding: 10px 20px; /* Padding around the navbar */
+  background-color: #f8f9fa; /* Light background for the navbar */
+}
+
+/* Blog title or logo styling */
+.navbar .navbar-brand {
+  margin-left: 20px; /* Space on the left */
+  font-size: 24px; /* Larger font size for visibility */
+  color: #333; /* Dark grey color for the text */
+  text-decoration: none; /* Removes underline */
+  transition: color 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Unified hover effect for both brand and links with increased specificity */
+.navbar .navbar-brand:hover,
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+  color: #0056b3; /* Uniform blue color on hover or focus */
+}
+
+/* Container for navigation links */
+.navbar .navbar-nav {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Individual list items */
+.navbar .nav-item {
+  margin-right: 20px; /* Increase spacing between nav items */
+}
+
+/* Link styling */
+.navbar .nav-link {
+  text-decoration: none; /* Removes underline */
+  color: #333; /* Dark grey color, easy on the eyes */
+  font-weight: 500; /* Slightly bolder to stand out */
+  transition: color 0.3s; /* Smooth transition for hover effect */
+}

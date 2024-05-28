@@ -1,0 +1,48 @@
+.category-list {
+  padding: 16px 0px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Ensures equal distribution */
+  grid-gap: 20px; /* Increased gap for better spacing */
+  row-gap: 20px;
+}
+
+.card {
+  background-color: #fff; /* Light background for better readability */
+  border-radius: 8px; /* Rounded corners */
+  border: 1px solid #e0e0e0; /* Subtle border */
+  overflow: hidden; /* Ensures nothing spills outside the border */
+  transition: box-shadow 0.3s ease; /* Smooth transition for hover */
+}
+
+.card:hover {
+  cursor: pointer;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* More pronounced shadow */
+}
+
+.card-body {
+  padding: 15px; /* Adds padding inside the card */
+  color: #333; /* Dark grey text color for better readability */
+}
+
+.card-title {
+  font-size: 18px; /* Larger font size for titles */
+  margin-bottom: 5px; /* Space between title and description */
+  color: #0056b3; /* Theme color for titles */
+}
+
+.card-text {
+  font-size: 14px; /* Adequate size for readability */
+}
+
+@media (max-width: 992px) {
+  .category-list {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .category-list {
+    grid-template-columns: 1fr; /* 1 column on very small screens */
+  }
+}

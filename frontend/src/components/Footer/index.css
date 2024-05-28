@@ -1,0 +1,22 @@
+.footer-container {
+  width: 100%; /* Ensures the footer spans the entire width */
+  position: relative; /* Stacks above other content if necessary */
+  z-index: 10; /* Keeps the footer above other elements */
+}
+
+.social-links {
+  display: flex; /* Uses flexbox for alignment */
+  justify-content: center; /* Centers the social links horizontally */
+  padding: 10px 0; /* Adds some vertical padding */
+  list-style: none; /* Removes list bullets */
+}
+
+.social-link-item {
+  margin: 0 10px; /* Adds horizontal spacing between icons */
+}
+
+.copy-right-section {
+  text-align: center; /* Centers the copyright text */
+  padding: 10px 0; /* Adds padding above and below the text */
+  background-color: rgba(0, 0, 0, 0.05); /* Adds a subtle background */
+}

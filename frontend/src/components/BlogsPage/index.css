@@ -1,0 +1,47 @@
+/* Container for the blog page */
+.blog-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Go through and look for everything that should be deleted*/
+
+/* Blog post */
+.blog-post {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+}
+
+/* Blog post title */
+.blog-post h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Blog post content */
+.blog-post p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Blog post metadata */
+.blog-post .metadata {
+  font-size: 14px;
+  color: #888;
+}
+
+/* Blog post read more link */
+.blog-post .read-more {
+  display: inline-block;
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+/* Blog post read more link on hover */
+.blog-post .read-more:hover {
+  text-decoration: underline;
+}
