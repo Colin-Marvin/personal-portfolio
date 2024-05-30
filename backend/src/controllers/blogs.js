@@ -1,23 +1,21 @@
 const Blog = require("../models/Blog");
 
 const createBlogs = async (req, res) => {
-  console.log(req.body);
-
-  const blog = new Blog({
-    title: req.body.title,
-    description: req.body.description,
-    image: req.body.image,
-    content: req.body.content,
-    authorId: req.body.authorId,
-    categoryId: req.body.categoryId,
-  });
-
-  await blog.save();
-
-  res.status(200).json({
-    message: "Blog created!",
-    data: [],
-  });
+  try {
+    const blog = new Blog({
+      authorId: req.body.authorId,
+      categoryId: req.body.categoryId,
+      readTime: req.body.readTime,
+      title: req.body.title,
+      description: req.body.description,
+      image: req.body.image,
+      content: req.body.content,
+    });
+    const newBlog = await blog.save();
+    res.status(201).json({ message: "New blog created!", data: newBlog });
+  } catch (error) {
+    res.status(500).json({ message: error.message, data: [] });
+  }
 };
 
 const getBlogs = async (req, res) => {
@@ -50,7 +48,15 @@ const getBlogsByCategoryID = (req, res) => {
   });
 };
 
-const updateBlog = async (req, res) => {
+const getBlogsByAuthorID = (req, res) => {
+  console.log(req.params.id);
+  res.status(200).json({
+    message: "Get blogs by authorID!",
+    data: [],
+  });
+};
+
+const updateBlogByID = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
     if (blog) {
@@ -70,7 +76,7 @@ const updateBlog = async (req, res) => {
   }
 };
 
-const deleteBlog = async (req, res) => {
+const deleteBlogByID = async (req, res) => {
   try {
     const blog = await Blog.findByIdAndDelete(req.params.id);
     if (blog) {
@@ -88,6 +94,7 @@ module.exports = {
   getBlogs,
   getBlogById,
   getBlogsByCategoryID,
+  getBlogsByAuthorID,
   updateBlogByID,
   deleteBlogByID,
 };
