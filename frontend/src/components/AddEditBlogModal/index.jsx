@@ -10,7 +10,12 @@ export default function AddEditBlogModal({
   categories,
   createBlogPost,
 }) {
-  const [blog, setBlog] = useState();
+  const [blog, setBlog] = useState({
+    title: "",
+    description: "",
+    categories: [],
+    content: [],
+  });
 
   const modalEl = document.getElementById("addEditModal");
 
@@ -34,7 +39,7 @@ export default function AddEditBlogModal({
       <div
         className="modal fade"
         id="addEditModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="addEditModalLabel"
         aria-hidden="true"
       >

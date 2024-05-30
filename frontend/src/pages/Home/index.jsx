@@ -17,7 +17,7 @@ export default function HomePage() {
   const [categories, setCategories] = useState([]);
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function HomePage() {
       try {
         setIsLoading(true);
         const blogs = await blogService.fetchBlogs();
-        setBlogs(blogs.data.reverse());
+        setBlogs(blogs);
         setIsSuccess(true);
         setMessage(blogs.message);
         setIsLoading(false);

@@ -22,15 +22,15 @@ export default function BlogsPage() {
   const [addBlog, setAddBlog] = useState();
   const [categories, setCategories] = useState();
 
-  const [loading, setLoading] = useState();
-  const [isSuccess, setIsSucces] = useState();
-  const [isError, setIsError] = useState();
-  const [message, setMessage] = useState();
+  const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const blogsRes = await blogService.getBlogsByCategoryId(categoryId);
+      const blogsRes = await blogService.fetchBlogs();
       const categoriesRes = await categoryService.getCategories();
       setBlogs(blogsRes);
       setCategories(categoriesRes);
@@ -66,10 +66,10 @@ export default function BlogsPage() {
   const createBlogPost = async (blog) => {
     try {
       const newBlog = await blogService.createBlog(blog);
-      setIsSucces(true);
+      setIsSuccess(true);
       setMessage(newBlog.message);
       setBlogs((prev) => {
-        if (newBlog.data.categories.some((x) => x.id === categoryId)) {
+        if (newBlog.data.categoryIds.some((x) => x.id === categoryId)) {
           prev?.unshift(newBlog.data);
         }
         return prev;
@@ -143,7 +143,7 @@ export default function BlogsPage() {
         show={isSuccess}
         message={message}
         onClose={() => {
-          setIsSucces(false);
+          setIsSuccess(false);
         }}
       />
 

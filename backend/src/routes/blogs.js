@@ -8,6 +8,7 @@ const blogController = require("../controllers/blogs");
  */
 router.post("/", (req, res) => {
   blogController.createBlogs(req, res);
+  res.send("Welcome to the Blog API");
 });
 
 /**
