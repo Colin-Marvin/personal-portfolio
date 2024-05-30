@@ -1,6 +1,7 @@
 import React from "react";
 
 import BlogItemText from "../BlogItemText";
+import EditButtons from "../EditButtons";
 
 import "../../App.css";
 import "./index.css";
@@ -10,7 +11,16 @@ export default function BlogItem({
   blogPost,
   setBlog,
   imageOrientation,
+  setEditBlog,
+  setDeleteBlog,
 }) {
+  const EditButtonsContainer = () => {
+    <EditButtons
+      onEdit={() => setEditBlog(blogPost)}
+      onDelete={() => setDeleteBlog(blogPost)}
+    />;
+  };
+
   if (imageOrientation === "top") {
     return (
       <div
@@ -24,6 +34,7 @@ export default function BlogItem({
             blogPost={blogPost}
             headerFontSize="20px"
           ></BlogItemText>
+          <EditButtonsContainer />
         </div>
       </div>
     );
@@ -41,6 +52,7 @@ export default function BlogItem({
             headerFontSize="20px"
           ></BlogItemText>
         </div>
+        <EditButtonsContainer />
       </div>
     );
   }

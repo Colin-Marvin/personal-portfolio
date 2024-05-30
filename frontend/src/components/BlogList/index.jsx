@@ -1,7 +1,9 @@
-import BlogItem from "../BlogItem";
+import React from "react";
 import PropTypes from "prop-types";
 
-export default function BlogList({ blogPosts }) {
+import BlogItem from "../BlogItem";
+
+export default function BlogList({ blogPosts, setEditBlog, setDeleteBlog }) {
   if (!blogPosts && !blogPosts?.length) {
     return null;
   }
@@ -17,6 +19,8 @@ export default function BlogList({ blogPosts }) {
             blogPost={blog}
             setBlog={() => {}}
             imageOrientation={"top"}
+            setEditBlog={setEditBlog}
+            setDeleteBlog={setDeleteBlog}
           />
         );
       })}
@@ -26,4 +30,6 @@ export default function BlogList({ blogPosts }) {
 
 BlogList.prototype = {
   blogPosts: PropTypes.array.isRequired,
+  setEditBlog: PropTypes.func.isRequired,
+  setDeleteBlog: PropTypes.func.isRequired,
 };
