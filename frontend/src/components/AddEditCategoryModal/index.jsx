@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Modal } from "bootstrap";
+import { SketchPicker } from "react-color";
 
 export default function AddEditCategoryModal({
   addCategory,
@@ -16,8 +17,12 @@ export default function AddEditCategoryModal({
   const [category, setCategory] = useState({
     title: "",
     description: "",
-    color: "",
+    color: "#ffffff",
   });
+
+  const handleColorChange = (color) => {
+    setCategory({ ...category, color: color.hex });
+  };
 
   useEffect(() => {
     if (addCategory) {
@@ -117,19 +122,12 @@ export default function AddEditCategoryModal({
               </div>
               <div className="mb-3">
                 <label htmlFor="color" className="form-label">
-                  Color Hexadecimal
+                  Color
                 </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="color"
-                  value={category?.color}
-                  onChange={(e) => {
-                    setCategory({ ...category, color: e.target.value });
-                  }}
-                  required
-                ></input>
-                <div className="valid-feedback">Looks good!</div>
+                <SketchPicker
+                  color={category.color}
+                  onChangeComplete={handleColorChange}
+                />
               </div>
             </form>
           </div>
