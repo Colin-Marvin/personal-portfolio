@@ -26,10 +26,10 @@ export default function BlogsPage() {
   const [editBlog, setEditBlog] = useState();
   const [deleteBlog, setDeleteBlog] = useState();
 
-  const [loading, setLoading] = useState();
-  const [isSuccess, setIsSuccess] = useState();
-  const [isError, setIsError] = useState();
-  const [message, setMessage] = useState();
+  const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {

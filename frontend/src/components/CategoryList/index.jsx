@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 
 import "./index.css";
 
-import EditButtons from "../EditButtons";
+//import EditButtons from "../EditButtons";
 
 export default function CategoriesList({ categories, onEdit, onDelete }) {
-  if (!categories && !categories?.length) {
+  if (!categories || !categories.length) {
     return null;
   }
 
@@ -14,10 +14,14 @@ export default function CategoriesList({ categories, onEdit, onDelete }) {
     <div className="category-list">
       {categories.map((category) => {
         return (
-          <button
+          <div
             key={category.id}
             className="card"
-            style={{ borderRadius: "0px", border: "none" }}
+            style={{
+              borderRadius: "0px",
+              border: "none",
+              position: "relative",
+            }}
             onClick={() => {
               console.log("TODO: Navigate to categories page");
             }}
@@ -26,28 +30,36 @@ export default function CategoriesList({ categories, onEdit, onDelete }) {
               className="card-body w-100"
               style={{
                 backgroundColor: category.color + "33",
-                position: "relative",
-                zIndex: 0,
               }}
             >
               <h5 className="card-title">{category.title}</h5>
-            </div>
-            <div className="card-body">
               <p className="card-text">
-                {category.description.substring(1, 100)} ...
+                {category.description.substring(0, 100)} ...
               </p>
             </div>
             {onEdit && onDelete && (
-              <EditButtons
-                onEdit={() => {
-                  onEdit(category);
-                }}
-                onDelete={() => {
-                  onDelete(category);
-                }}
-              />
+              <div style={{ position: "absolute", top: "10px", right: "10px" }}>
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevents the card's onClick from firing
+                    onEdit(category);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevents the card's onClick from firing
+                    onDelete(category);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
             )}
-          </button>
+          </div>
         );
       })}
     </div>
