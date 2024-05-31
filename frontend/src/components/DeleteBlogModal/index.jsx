@@ -1,15 +1,9 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { Modal } from "bootstrap";
+import PropTypes from "prop-types";
 
-export default function DeleteBlogModal({ deleteBlog, removeBlog }) {
-  const [blog, setBlog] = useState({
-    image: "",
-    title: "",
-    description: "",
-    categories: [],
-    content: [],
-    authorId: "",
-  });
+export default function DeleteBlogModal({ deleteBlog, removeBlog, onClose }) {
+  const [blog, setBlog] = useState();
 
   const modalEl = document.getElementById("deleteBlogModal");
   const deleteBlogModal = useMemo(() => {
@@ -34,14 +28,13 @@ export default function DeleteBlogModal({ deleteBlog, removeBlog }) {
     });
   };
 
-  const onClose = (e) => {
-    e.preventDefault();
+  const onCloseModal = () => {
     resetBlog();
+    onClose();
     deleteBlogModal?.hide();
   };
 
-  const onDelete = (e) => {
-    e.preventDefault();
+  const onDelete = () => {
     removeBlog(deleteBlog);
     resetBlog();
     deleteBlogModal?.hide();
@@ -63,8 +56,8 @@ export default function DeleteBlogModal({ deleteBlog, removeBlog }) {
             <button
               type="button"
               className="btn-close"
-              data-bs-dismiss="modal"
               aria-label="Close"
+              onClick={onCloseModal}
             ></button>
           </div>
           <div className="modal-body">
@@ -83,7 +76,7 @@ export default function DeleteBlogModal({ deleteBlog, removeBlog }) {
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={onClose}
+              onClick={onCloseModal}
             >
               Close
             </button>
@@ -100,3 +93,9 @@ export default function DeleteBlogModal({ deleteBlog, removeBlog }) {
     </div>
   );
 }
+
+DeleteBlogModal.prototype = {
+  deleteBlog: PropTypes.object,
+  removeBlog: PropTypes.func,
+  onClose: PropTypes.func,
+};

@@ -8,14 +8,10 @@ export default function AddEditBlogModal({
   addBlog,
   editBlog,
   categories,
-  createBlogPost,
+  createBlog,
+  updateBlog,
 }) {
-  const [blog, setBlog] = useState({
-    title: "",
-    description: "",
-    categories: [],
-    content: [],
-  });
+  const [blog, setBlog] = useState();
 
   const modalEl = document.getElementById("addEditModal");
 
@@ -27,19 +23,51 @@ export default function AddEditBlogModal({
     if (addBlog) {
       setBlog(addBlog);
       addEditModal.show();
+    } else if (editBlog) {
+      setBlog(editBlog);
+      addEditModal.show();
     }
-  }, [addBlog]);
+  }, [addBlog, editBlog, addEditModal]);
 
   if (!categories && !categories?.length) {
     return null;
   }
+
+  const onSubmit = (e) => {
+    e?.preventDefault();
+    if (isFormValid()) {
+      if (addBlog) {
+        createBlog(blog);
+      } else if (editBlog) {
+        updateBlog(blog);
+      }
+      resetBlog();
+      addEditModal?.hide();
+    }
+  };
+
+  const resetBlog = () => {
+    setBlog({
+      title: "",
+      description: "",
+      categories: [],
+      content: [],
+      authorId: "",
+    });
+  };
+
+  const isFormValid = () => {
+    const form = document.getElementById("blogForm");
+    form?.classList?.add("was-validated");
+    return form?.checkValidity();
+  };
 
   return (
     <div>
       <div
         className="modal fade"
         id="addEditModal"
-        tabIndex="-1"
+        tabindex="-1"
         aria-labelledby="addEditModalLabel"
         aria-hidden="true"
       >
@@ -267,15 +295,7 @@ export default function AddEditBlogModal({
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() => {
-                  const newBlog = blog;
-                  newBlog.categoryIds = blog.categories.map((x) => x.id);
-                  delete blog.categories;
-                  newBlog.authorId = blog.author.id;
-                  delete blog.author;
-                  createBlogPost(blog);
-                  addEditModal.hide();
-                }}
+                onClick={onSubmit}
               >
                 Save changes
               </button>

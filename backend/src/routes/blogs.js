@@ -8,7 +8,6 @@ const blogController = require("../controllers/blogs");
  */
 router.post("/", (req, res) => {
   blogController.createBlogs(req, res);
-  res.send("Welcome to the Blog API");
 });
 
 /**
@@ -23,7 +22,7 @@ router.get("/", (req, res) => {
  * GET /api/blogs/:id
  */
 router.get("/:id", (req, res) => {
-  blogController.updateBlogByID(req, res);
+  blogController.getBlogById(req, res);
 });
 
 /**

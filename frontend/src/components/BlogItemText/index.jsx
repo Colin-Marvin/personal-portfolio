@@ -4,11 +4,6 @@ import PropTypes from "prop-types";
 import Categories from "../Categories";
 import "./index.css";
 
-/*<p className="date-author-text">
-          {blogPost.author.firstName} {blogPost.author.lastName}
-        </p>
-        put this just below the first style*/
-
 export default function BlogItemText({ blogPost, headerFontSize }) {
   return (
     <div>
