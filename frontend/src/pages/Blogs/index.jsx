@@ -31,6 +31,8 @@ export default function BlogsPage() {
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState("");
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);

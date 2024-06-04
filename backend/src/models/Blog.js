@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 
 const blogSchema = new mongoose.Schema(
   {
-    author: {
-      type: Map,
-      of: mongoose.Schema.Types.Mixed,
+    authorId: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: "User",
     },
     categoryIds: {
       type: [mongoose.Schema.Types.ObjectId],
@@ -34,7 +34,13 @@ const blogSchema = new mongoose.Schema(
 
 // Add a toJSON method to the schema to control the output of blog instances
 blogSchema.method("toJSON", function () {
-  const { __v, _id, categoryIds, ...object } = this.toObject();
+  const {
+    __v,
+    _id,
+    categoryIds: categories,
+    authorId: author,
+    ...object
+  } = this.toObject();
   object.id = _id;
 
   object.categories = categoryIds.map((category) => {
@@ -46,9 +52,16 @@ blogSchema.method("toJSON", function () {
     };
   });
 
-  // Ensure author is included in the returned object
-  if (this.author) {
-    object.author = this.author;
+  // Add author details to the blog object
+  if (authorId && authorId._id) {
+    object.author = {
+      id: author._id,
+      firstName: author.firstName,
+      lastName: author.lastName,
+      email: author.email,
+      image: author.image,
+      bio: author.bio,
+    };
   }
 
   return object;

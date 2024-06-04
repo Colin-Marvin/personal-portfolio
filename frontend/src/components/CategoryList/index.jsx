@@ -6,6 +6,8 @@ import "./index.css";
 //import EditButtons from "../EditButtons";
 
 export default function CategoriesList({ categories, onEdit, onDelete }) {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   if (!categories || !categories.length) {
     return null;
   }
@@ -37,7 +39,7 @@ export default function CategoriesList({ categories, onEdit, onDelete }) {
                 {category.description.substring(0, 100)} ...
               </p>
             </div>
-            {onEdit && onDelete && (
+            {user && user?.token && onEdit && onDelete && (
               <div style={{ position: "absolute", top: "10px", right: "10px" }}>
                 <button
                   className="btn btn-sm btn-primary"
