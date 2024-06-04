@@ -7,6 +7,8 @@ import SuccessToast from "../../components/SuccessToast";
 import ErrorToast from "../../components/ErrorToast";
 import Loading from "../../components/Loading";
 import authService from "../../services/authService";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -54,6 +56,7 @@ export default function RegisterPage() {
 
   return (
     <>
+      <Navbar />
       <div className="html-body">
         <main className="form-signin">
           <form onSubmit={onSubmit}>
@@ -130,6 +133,7 @@ export default function RegisterPage() {
           </form>
         </main>
       </div>
+      <Footer />
       <SuccessToast
         show={isSuccess}
         message={message}

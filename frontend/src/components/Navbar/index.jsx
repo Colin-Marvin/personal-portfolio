@@ -43,6 +43,11 @@ export default function Navbar() {
                 Categories
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link active" aria-current="page" to="/login">
+                Login
+              </Link>
+            </li>
             {user && user.token ? (
               <li className="nav-item">
                 <div className="dropdown">

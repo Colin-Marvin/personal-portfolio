@@ -2,12 +2,19 @@ const express = require("express");
 const router = express.Router();
 
 const blogController = require("../controllers/blogs");
+
 const { protect } = require("../middleware/authMiddleware");
+
+const logMiddleware = (req, res, next) => {
+  console.log("I am a middleware");
+  console.log(req.bogy);
+  next();
+};
 
 /**
  * POST /api/blogs
  */
-router.post("/", protect, (req, res) => {
+router.post("/", logMiddleware, protect, (req, res) => {
   blogController.createBlogs(req, res);
 });
 

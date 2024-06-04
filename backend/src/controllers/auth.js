@@ -1,11 +1,22 @@
-const User = require("../models/User");
-
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    //expiresIn: "30d",
-  });
+const User = require("../models/User");
+
+const generateToken = (user) => {
+  return jwt.sign(
+    {
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      bio: user.bio,
+    },
+    process.env.JWT_SECRET,
+    {
+      // expiresIn: "1d",
+    }
+  );
 };
 
 const register = async (req, res) => {
@@ -13,13 +24,13 @@ const register = async (req, res) => {
     const { firstName, lastName, email, bio, password } = req.body;
     //check payload
     if (!firstName || !lastName || !email || !bio || !password) {
-      res.status(400).json({ message: "All fields are required", data: [] });
+      res.status(400).json({ message: "All fields are required" });
       return;
     }
     // check if email already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
-      res.status(400).json({ message: "User already exists", data: [] });
+      res.status(400).json({ message: "User already exists" });
       return;
     }
     // hash password
@@ -35,11 +46,11 @@ const register = async (req, res) => {
     });
     const newUser = await user.save();
     let resUser = newUser.toJSON();
-    resUser.token = generateToken(newUser._id);
+    resUser.token = generateToken(resUser);
     delete resUser.password;
     res.status(201).json({ message: "New user created!", data: resUser });
   } catch (error) {
-    res.status(500).json({ message: error.message, data: [] });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -48,26 +59,27 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     // check payload
     if (!email || !password) {
-      res.status(400).json({ message: "All fields are required", data: [] });
+      res.status(400).json({ message: "All fields are required" });
       return;
     }
     // check if user exists
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(400).json({ message: "User does not exist", data: [] });
+      res.status(400).json({ message: "User does not exist" });
       return;
     }
     // check hashed password
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      res.status(400).json({ message: "Invalid credentials", data: [] });
+      res.status(401).json({ message: "Invalid credentials" });
       return;
     }
     let resUser = user.toJSON();
+    resUser.token = generateToken(resUser);
     delete resUser.password;
-    res.status(200).json({ message: "Login successful!", data: user });
+    res.status(200).json({ message: "Login successful!", data: resUser });
   } catch (error) {
-    res.status(500).json({ message: error.message, data: [] });
+    res.status(500).json({ message: error.message });
   }
 };
 

@@ -8,8 +8,14 @@ const register = async (userData) => {
   });
 
   if (!response.ok) {
-    let res = await response.json();
-    throw res;
+    try {
+      let res = await response.json();
+      throw res.message || JSON.stringify(res);
+    } catch (err) {
+      console.log(err);
+      const error = new Error("Something went wrong");
+      throw error.message;
+    }
   }
 
   const responseData = await response.json();
@@ -27,8 +33,14 @@ const login = async (userData) => {
   });
 
   if (!response.ok) {
-    let res = await response.json();
-    throw res;
+    try {
+      let res = await response.json();
+      throw res.message || JSON.stringify(res);
+    } catch (err) {
+      console.log(err);
+      const error = new Error("Something went wrong");
+      throw error.message;
+    }
   }
 
   const responseData = await response.json();
@@ -56,7 +68,7 @@ const updateUser = async (userId, userData) => {
     {
       method: "PUT",
       headers: {
-        // "Content-Type": "application/json",
+        "Content-Type": "application/json",
         Authorization:
           "Bearer " + JSON.parse(localStorage.getItem("user")).token,
       },

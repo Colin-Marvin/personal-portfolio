@@ -41,9 +41,10 @@ blogSchema.method("toJSON", function () {
     authorId: author,
     ...object
   } = this.toObject();
+
   object.id = _id;
 
-  object.categories = categoryIds.map((category) => {
+  object.categories = categories.map((category) => {
     return {
       id: category._id,
       title: category.title,
@@ -52,8 +53,9 @@ blogSchema.method("toJSON", function () {
     };
   });
 
+  // Ensure author is included in the returned object
   // Add author details to the blog object
-  if (authorId && authorId._id) {
+  if (author && author._id) {
     object.author = {
       id: author._id,
       firstName: author.firstName,
