@@ -20,10 +20,10 @@ export default function CategoriesPage() {
   const [editCategory, setEditCategory] = useState();
   const [deleteCategory, setDeleteCategory] = useState();
 
-  const [loading, setLoading] = useState();
-  const [message, setMessage] = useState();
-  const [isSuccess, setIsSuccess] = useState();
-  const [isError, setIsError] = useState();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {

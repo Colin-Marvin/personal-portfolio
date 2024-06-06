@@ -1,23 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login, resetSuccessAndError } from "../../features/authSlice";
 
 import SuccessToast from "../../components/SuccessToast";
 import ErrorToast from "../../components/ErrorToast";
-import Loading from "../../components/Loading";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 import "./index.css";
 
-import authService from "../../services/authService";
-
 export default function LoginPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isSuccess || user) {
+      navigate("/home");
+    }
+  }, [user, isError, isSuccess, isLoading, message, navigate]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -35,27 +38,15 @@ export default function LoginPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    try {
-      setLoading(true);
-      const res = await authService.login(formData);
-      setMessage(res.message);
-      setIsSuccess(true);
-      navigate("/home");
-      setLoading(false);
-    } catch (err) {
-      setMessage(err);
-      setIsError(true);
-      setLoading(false);
-    }
+    dispatch(login(formData));
   };
 
-  if (loading) {
-    return <Loading />;
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
   return (
     <>
-      <Navbar />
       <div className="html-body">
         <main className="form-signin">
           <form onSubmit={onSubmit}>
@@ -91,22 +82,24 @@ export default function LoginPage() {
             <Link to="/register" className="my-5">
               Register
             </Link>
+            <p className="mt-5 mb-3 text-muted text-center">
+              The Blog App &copy; 2024
+            </p>
           </form>
         </main>
       </div>
-      <Footer />
       <SuccessToast
         show={isSuccess}
         message={message}
         onClose={() => {
-          setIsSuccess(false);
+          dispatch(resetSuccessAndError());
         }}
       />
       <ErrorToast
         show={isError}
         message={message}
         onClose={() => {
-          setIsError(false);
+          dispatch(resetSuccessAndError());
         }}
       />
     </>
