@@ -6,6 +6,8 @@ import { register, reset } from "../../features/authSlice";
 
 import SuccessToast from "../../components/SuccessToast";
 import ErrorToast from "../../components/ErrorToast";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -44,6 +46,7 @@ export default function RegisterPage() {
 
   return (
     <>
+      <Navbar />
       <div className="html-body">
         <main className="form-signin">
           <form onSubmit={onSubmit}>
@@ -114,12 +117,10 @@ export default function RegisterPage() {
             <Link to="/login" className="my-5">
               Login
             </Link>
-            <p className="mt-5 mb-3 text-muted text-center">
-              The Blog App &copy; 2024
-            </p>
           </form>
         </main>
       </div>
+      <Footer />
       <SuccessToast
         show={isSuccess}
         message={message}

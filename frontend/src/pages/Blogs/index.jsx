@@ -1,6 +1,6 @@
 // Third party
 import React, { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 // Components
@@ -13,6 +13,7 @@ import DeleteBlogModal from "../../components/DeleteBlogModal";
 import SuccessToast from "../../components/SuccessToast";
 import ErrorToast from "../../components/ErrorToast";
 import Loading from "../../components/Loading";
+import CategoryList from "../../components/CategoryList";
 
 // Styles
 import "../../App.css";
@@ -57,7 +58,7 @@ export default function BlogsPage() {
       dispatch(resetBlog());
       dispatch(resetCategory());
     };
-  }, [categoryId]);
+  }, [dispatch, categoryId]);
 
   const onAddBlog = () => {
     dispatch(
@@ -70,28 +71,6 @@ export default function BlogsPage() {
         authorId: user?.id,
       })
     );
-  };
-
-  const CategoriesList = () => {
-    return categories.map((category, index) => {
-      return categoryId === category.id.toString() ? (
-        <Link
-          key={index}
-          to={"/blogs/" + category.id}
-          style={{ color: "blue" }}
-        >
-          <p key={index}>{category.title}</p>
-        </Link>
-      ) : (
-        <Link
-          key={index}
-          to={"/blogs/" + category.id}
-          style={{ color: "black" }}
-        >
-          <p key={index}>{category.title}</p>
-        </Link>
-      );
-    });
   };
 
   const AddBlog = () => {
@@ -122,7 +101,7 @@ export default function BlogsPage() {
       <div className="container">
         <Heading />
         <div className="scroll-menu">
-          <CategoriesList />
+          <CategoryList categories={categories} />
         </div>
         <AddBlog />
         <BlogList blogPosts={blogs} />

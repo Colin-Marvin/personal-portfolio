@@ -85,9 +85,6 @@ export default function LoginPage() {
             <Link to="/register" className="my-5">
               Register
             </Link>
-            <p className="mt-5 mb-3 text-muted text-center">
-              The Blog App &copy; 2024
-            </p>
           </form>
         </main>
       </div>

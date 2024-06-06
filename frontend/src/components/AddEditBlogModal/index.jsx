@@ -35,7 +35,7 @@ export default function AddEditBlogModal() {
   const { addBlog, editBlog } = useSelector((state) => state.blogs);
   const { categories } = useSelector((state) => state.categories);
 
-  const [blogImage, setBlogImage] = useState("");
+  //const [blogImage, setBlogImage] = useState("");
   const [blog, setBlog] = useState({
     image: "",
     title: "",
@@ -48,18 +48,18 @@ export default function AddEditBlogModal() {
   useEffect(() => {
     if (addBlog) {
       setBlog(addBlog);
-      setBlogImage(addBlog.image);
+      //setBlogImage(addBlog.image);
       addEditBlogModal?.show();
     } else if (editBlog) {
       setBlog(editBlog);
-      setBlogImage(editBlog.image);
+      //setBlogImage(editBlog.image);
       addEditBlogModal?.show();
     }
   }, [addBlog, editBlog, addEditBlogModal]);
 
   const resetBlog = () => {
     setBlog({
-      image: "",
+      //image: "",
       title: "",
       description: "",
       categories: [],
@@ -71,7 +71,7 @@ export default function AddEditBlogModal() {
   const buildFormData = () => {
     const formData = new FormData();
     formData.append("id", blog.id);
-    formData.append("image", blog.image);
+    //formData.append("image", blog.image);
     formData.append("title", blog.title);
     formData.append("description", blog.description);
     formData.append(
@@ -99,9 +99,10 @@ export default function AddEditBlogModal() {
     if (isFormValid()) {
       const blogForm = buildFormData();
       if (editBlog) {
+        /*
         if (blogForm.get("image") === editBlog.image) {
           blogForm.delete("image");
-        }
+        }*/
         dispatch(updateBlog(blogForm));
       } else {
         dispatch(createBlog(blogForm));
@@ -119,13 +120,14 @@ export default function AddEditBlogModal() {
     return form?.checkValidity() && hasCategories;
   };
 
+  /*
   const onImageChange = (e) => {
     if (e?.target?.files?.length) {
       const file = e.target.files[0];
       setBlogImage(URL.createObjectURL(file));
       setBlog({ ...blog, image: file });
     }
-  };
+  };*/
 
   return (
     <div
@@ -215,6 +217,7 @@ export default function AddEditBlogModal() {
                   required
                 />
                 <div className="valid-feedback">Looks good!</div>
+                <div className="invalid-feedback">Invalid</div>
               </div>
               <div className="mb-3">
                 <label htmlFor="description" className="form-label">
