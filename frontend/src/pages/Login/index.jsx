@@ -5,6 +5,8 @@ import { login, resetSuccessAndError } from "../../features/authSlice";
 
 import SuccessToast from "../../components/SuccessToast";
 import ErrorToast from "../../components/ErrorToast";
+import NavBar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 import "./index.css";
 
@@ -47,6 +49,7 @@ export default function LoginPage() {
 
   return (
     <>
+      <NavBar />
       <div className="html-body">
         <main className="form-signin">
           <form onSubmit={onSubmit}>
@@ -88,6 +91,7 @@ export default function LoginPage() {
           </form>
         </main>
       </div>
+      <Footer />
       <SuccessToast
         show={isSuccess}
         message={message}
