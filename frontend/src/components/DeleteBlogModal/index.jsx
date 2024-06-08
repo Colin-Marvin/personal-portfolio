@@ -1,12 +1,14 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { Modal } from "bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-import { deleteBlogById, setDeleteBlog } from "../../features/blogSlice";
+import { deleteBlogById, setDeleteBlog } from "../../features/blogsSlice";
 
 export default function DeleteBlogModal() {
   const dispatch = useDispatch();
-  const blog = useSelector((state) => state.blogs.deleteBlog);
+  const [blog, setBlog] = useState();
+
+  const { deleteBlog } = useSelector((state) => state.blogs);
 
   const modalEl = document.getElementById("deleteBlogModal");
   const deleteBlogModal = useMemo(() => {
@@ -14,20 +16,32 @@ export default function DeleteBlogModal() {
   }, [modalEl]);
 
   useEffect(() => {
-    if (blog) {
+    if (deleteBlog) {
+      setBlog(deleteBlog);
       deleteBlogModal?.show();
     }
-  }, [blog, deleteBlogModal]);
+  }, [deleteBlog, deleteBlogModal]);
 
-  const onClose = (e) => {
-    e.preventDefault();
+  const resetBlog = () => {
+    setBlog({
+      image: "",
+      title: "",
+      description: "",
+      categories: [],
+      content: [],
+      authorId: "",
+    });
+  };
+
+  const onCloseModal = () => {
+    resetBlog();
     dispatch(setDeleteBlog(null));
     deleteBlogModal?.hide();
   };
 
-  const onDelete = (e) => {
-    e.preventDefault();
-    dispatch(deleteBlogById(blog.id));
+  const onDelete = () => {
+    dispatch(deleteBlogById(blog?.id));
+    resetBlog();
     deleteBlogModal?.hide();
   };
 
@@ -47,8 +61,8 @@ export default function DeleteBlogModal() {
             <button
               type="button"
               className="btn-close"
-              data-bs-dismiss="modal"
               aria-label="Close"
+              onClick={onCloseModal}
             ></button>
           </div>
           <div className="modal-body">
@@ -67,7 +81,7 @@ export default function DeleteBlogModal() {
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={onClose}
+              onClick={onCloseModal}
             >
               Close
             </button>

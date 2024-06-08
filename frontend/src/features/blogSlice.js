@@ -114,6 +114,7 @@ export const blogsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
       .addCase(createBlog.pending, (state) => {
         state.isLoading = true;
       })
@@ -131,21 +132,21 @@ export const blogsSlice = createSlice({
         state.isError = true;
         state.message = payload.message;
       })
+
       .addCase(fetchBlogs.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(fetchBlogs.fulfilled, (state, { payload }) => {
         state.blogs = payload.data;
-        state.isLoading = false;
         // state.isSuccess = true;
         state.isError = false;
-        // state.message = payload.message;
+        state.message = payload.message;
+        state.isLoading = false;
       })
       .addCase(fetchBlogs.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.isSuccess = false;
         state.isError = true;
-        state.message = payload;
+        state.isSuccess = false;
+        state.message = payload.message;
       })
       .addCase(fetchBlogsByCategoryId.pending, (state) => {
         state.isLoading = true;

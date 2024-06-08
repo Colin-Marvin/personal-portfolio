@@ -1,15 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { register, reset } from "../../features/authSlice";
+import "./index.css";
 
 import SuccessToast from "../../components/SuccessToast";
 import ErrorToast from "../../components/ErrorToast";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+import Loading from "../../components/Loading";
+
+import { register, resetSuccessAndError } from "../../features/authSlice";
 
 export default function RegisterPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isSuccess, isError, message, isLoading } = useSelector(
+    (state) => state.auth
+  );
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -20,18 +28,6 @@ export default function RegisterPage() {
 
   const { firstName, lastName, bio, email, password } = formData;
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.auth
-  );
-
-  useEffect(() => {
-    if (isSuccess || user) {
-      navigate("/home");
-    }
-  }, [user, isError, isSuccess, isLoading, message, navigate]);
-
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -41,12 +37,20 @@ export default function RegisterPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(register(formData));
+    try {
+      dispatch(register(formData));
+      navigate("/home");
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
-      <Navbar />
       <div className="html-body">
         <main className="form-signin">
           <form onSubmit={onSubmit}>
@@ -117,22 +121,24 @@ export default function RegisterPage() {
             <Link to="/login" className="my-5">
               Login
             </Link>
+            <p className="mt-5 mb-3 text-muted text-center">
+              The Blog App &copy; 2024
+            </p>
           </form>
         </main>
       </div>
-      <Footer />
       <SuccessToast
         show={isSuccess}
         message={message}
         onClose={() => {
-          dispatch(reset());
+          dispatch(resetSuccessAndError());
         }}
       />
       <ErrorToast
         show={isError}
         message={message}
         onClose={() => {
-          dispatch(reset());
+          dispatch(resetSuccessAndError());
         }}
       />
     </>

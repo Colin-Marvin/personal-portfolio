@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import BlogItemText from "../BlogItemText";
 import EditButtons from "../EditButtons";
 
-import "../../App.css";
+import PropTypes from "prop-types";
+
 import "./index.css";
 
 export default function BlogItem({
@@ -18,7 +19,7 @@ export default function BlogItem({
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const navigateToBlog = () => {
-    if (!onBlogEdit && !onBlogDelete) {
+    if ((!user && !user?.token) || (!onBlogEdit && !onBlogDelete)) {
       navigate(`/blog/${blog.id}`);
     }
   };
@@ -28,6 +29,7 @@ export default function BlogItem({
       <EditButtons
         onEdit={() => onBlogEdit(blog)}
         onDelete={() => onBlogDelete(blog)}
+        onNavigate={() => navigate(`/blog/${blog.id}`)}
       />
     );
   };
@@ -37,7 +39,9 @@ export default function BlogItem({
         <img src={blog.image} className="card-img-top" alt="..." />
         <div className="card-text-bottom">
           <BlogItemText blogPost={blog} headerFontSize="20px" />
-          {onBlogEdit && onBlogDelete ? <EditButtonsContainer /> : null}
+          {user && user.token && onBlogEdit && onBlogDelete ? (
+            <EditButtonsContainer />
+          ) : null}
         </div>
       </div>
     );
@@ -55,3 +59,11 @@ export default function BlogItem({
     );
   }
 }
+
+BlogItem.propTypes = {
+  index: PropTypes.number.isRequired,
+  blog: PropTypes.object.isRequired,
+  imageOrientation: PropTypes.string.isRequired,
+  onBlogEdit: PropTypes.func,
+  onBlogDelete: PropTypes.func,
+};

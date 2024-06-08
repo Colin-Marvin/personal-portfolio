@@ -1,28 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login, resetSuccessAndError } from "../../features/authSlice";
 
 import SuccessToast from "../../components/SuccessToast";
 import ErrorToast from "../../components/ErrorToast";
-import NavBar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+import Loading from "../../components/Loading";
 
 import "./index.css";
 
-export default function LoginPage() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+import { login, resetSuccessAndError } from "../../features/authSlice";
 
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
+export default function LoginPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isSuccess, isError, message, isLoading } = useSelector(
     (state) => state.auth
   );
-
-  useEffect(() => {
-    if (isSuccess || user) {
-      navigate("/home");
-    }
-  }, [user, isError, isSuccess, isLoading, message, navigate]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -40,16 +34,20 @@ export default function LoginPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(login(formData));
+    try {
+      dispatch(login(formData));
+      navigate("/home");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
     <>
-      <NavBar />
       <div className="html-body">
         <main className="form-signin">
           <form onSubmit={onSubmit}>
@@ -85,10 +83,12 @@ export default function LoginPage() {
             <Link to="/register" className="my-5">
               Register
             </Link>
+            <p className="mt-5 mb-3 text-muted text-center">
+              The Blog App &copy; 2024
+            </p>
           </form>
         </main>
       </div>
-      <Footer />
       <SuccessToast
         show={isSuccess}
         message={message}

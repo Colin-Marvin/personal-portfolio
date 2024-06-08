@@ -1,33 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 import Navbar from "../../components/Navbar";
+
+import Categories from "../../components/Categories";
 import Footer from "../../components/Footer";
-import Loading from "../../components/Loading";
-import SuccessToast from "../../components/SuccessToast";
-import ErrorToast from "../../components/ErrorToast";
 
 import blogService from "../../services/blogService";
-import Categories from "../../components/Categories";
+import SuccessToast from "../../components/SuccessToast";
+import ErrorToast from "../../components/ErrorToast";
+import Loading from "../../components/Loading";
+
+import "./index.css";
 
 export default function BlogPage() {
+  const navigate = useNavigate();
+  const { blogId } = useParams();
+
   const [blog, setBlog] = useState(null);
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState("");
-  const { blogId } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const blog = await blogService.fetchBlogById(blogId);
+        const blog = await blogService.fetchBlogByID(blogId);
         setBlog(blog.data);
-        setIsSuccess(true);
         setMessage(blog.message);
         setIsLoading(false);
       } catch (error) {
@@ -49,13 +51,13 @@ export default function BlogPage() {
     setMessage("");
   };
 
-  if (isLoading || !blog) {
-    return <Loading />;
-  }
-
   const navigateToAuthorProfile = () => {
     navigate("/profile/" + blog.author.id);
   };
+
+  if (isLoading || !blog) {
+    return <Loading />;
+  }
 
   return (
     <>

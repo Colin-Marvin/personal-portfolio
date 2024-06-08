@@ -42,6 +42,10 @@ const routes = [
     path: "/register",
     element: <RegisterPage />,
   },
+  {
+    path: "/profile/:authorId",
+    element: <ProfilePage />,
+  },
 ];
 const router = createBrowserRouter(routes);
 

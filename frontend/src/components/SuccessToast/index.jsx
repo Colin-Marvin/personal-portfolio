@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { Toast } from "bootstrap";
+import PropTypes from "prop-types";
 
 export default function SuccessToast({ show, message, onClose }) {
   let [successToast, setSuccessToast] = useState(null);
