@@ -2,7 +2,9 @@ const { Storage } = require("@google-cloud/storage");
 
 const storage = new Storage({
   projectId: "ix-blog",
-  credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS),
+  credentials: process.env.GOOGLE_CREDENTIALS
+    ? JSON.parse(process.env.GOOGLE_CREDENTIALS)
+    : undefined,
 });
 
 const uploadToFirebaseStorage = async (filepath, fileName) => {
