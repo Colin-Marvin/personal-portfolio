@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { Modal } from "bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,40 +17,35 @@ export default function AddEditBlogModal() {
   const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
 
+  const modalEl = document.getElementById("addEditBlogModal");
+  const addEditModal = useMemo(() => {
+    return modalEl ? new Modal(modalEl) : null;
+  }, [modalEl]);
+
   const { addBlog, editBlog } = useSelector((state) => state.blogs);
   const { categories } = useSelector((state) => state.categories);
 
-  const [blog, setBlog] = useState();
   const [blogImage, setBlogImage] = useState("");
-
-  const modalRef = useRef(null);
-  const [addEditModal, setModal] = useState(null);
-
-  // Initialize and clean up the modal
-  useEffect(() => {
-    if (modalRef.current) {
-      const newModal = new Modal(modalRef.current);
-      setModal(newModal);
-      return () => {
-        newModal.hide();
-      };
-    }
-  }, [modalRef]);
+  const [blog, setBlog] = useState({
+    image: "",
+    title: "",
+    description: "",
+    categories: [],
+    content: [],
+    authorId: user?.id,
+  });
 
   useEffect(() => {
     if (addBlog) {
-      setBlog({
-        title: "",
-        description: "",
-        categories: [],
-        content: [],
-        authorId: user?._id,
-      });
+      setBlog(addBlog);
+      setBlogImage(addBlog.image);
+      addEditModal?.show();
     } else if (editBlog) {
       setBlog(editBlog);
-      setBlogImage(editBlog?.image);
+      setBlogImage(editBlog.image);
+      addEditModal?.show();
     }
-  }, [addBlog, editBlog]);
+  }, [addBlog, editBlog, addEditModal]);
 
   const buildFormData = () => {
     const formData = new FormData();
