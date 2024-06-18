@@ -2,7 +2,7 @@ const { Storage } = require("@google-cloud/storage");
 
 const storage = new Storage({
   projectId: "ix-blog",
-  keyFilename: "./gcp_key.json",
+  filepath: "/Users/cutlass/Downloads/gcp_key.json",
 });
 
 const uploadToFirebaseStorage = async (filepath, fileName) => {
