@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { Modal } from "bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,21 +23,34 @@ export default function AddEditBlogModal() {
   const [blog, setBlog] = useState();
   const [blogImage, setBlogImage] = useState("");
 
-  const modalEl = document.getElementById("addEditModal");
+  const modalRef = useRef(null);
+  const [addEditModal, setModal] = useState(null);
 
-  const addEditModal = useMemo(() => {
-    return modalEl ? new Modal(modalEl) : null;
-  }, [modalEl]);
+  // Initialize and clean up the modal
+  useEffect(() => {
+    if (modalRef.current) {
+      const newModal = new Modal(modalRef.current);
+      setModal(newModal);
+      return () => {
+        newModal.hide();
+      };
+    }
+  }, [modalRef]);
 
   useEffect(() => {
     if (addBlog) {
-      setBlog(addBlog);
-      addEditModal.show();
+      setBlog({
+        title: "",
+        description: "",
+        categories: [],
+        content: [],
+        authorId: user?._id,
+      });
     } else if (editBlog) {
       setBlog(editBlog);
-      addEditModal.show();
+      setBlogImage(editBlog?.image);
     }
-  }, [addBlog, editBlog, addEditModal]);
+  }, [addBlog, editBlog]);
 
   const buildFormData = () => {
     const formData = new FormData();
