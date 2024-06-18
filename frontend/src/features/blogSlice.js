@@ -54,7 +54,7 @@ export const fetchBlogById = createAsyncThunk(
   "blogs/fetchBlogById",
   async (blogId, thunkAPI) => {
     try {
-      return await blogService.fetchBlogById(blogId);
+      return await blogService.fetchBlogsByAuthorId(blogId);
     } catch (error) {
       const message = error.message || error;
       return thunkAPI.rejectWithValue(message);
@@ -78,7 +78,7 @@ export const deleteBlogById = createAsyncThunk(
   "blogs/deleteBlogById",
   async (blogId, thunkAPI) => {
     try {
-      return await blogService.deleteBlogsById(blogId);
+      return await blogService.deleteBlog(blogId);
     } catch (error) {
       const message = error.message || error;
       return thunkAPI.rejectWithValue(message);
@@ -208,7 +208,6 @@ export const blogsSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-
         state.message = payload.message;
       })
       .addCase(deleteBlogById.rejected, (state, { payload }) => {

@@ -12,6 +12,7 @@ import BlogPage from "./pages/Blog";
 import CategoriesPage from "./pages/Categories";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
+import ProfilePage from "./pages/Profile";
 
 const routes = [
   {

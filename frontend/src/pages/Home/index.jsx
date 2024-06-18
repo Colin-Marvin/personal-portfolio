@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Navbar from "../../components/Navbar";
 import Heading from "../../components/Heading";
-import SubHeading from "../../components/Subheading";
+import SubHeading from "../../components/SubHeading";
 import BlogGrid from "../../components/BlogGrid";
-import CategoriesList from "../../components/CategoriesList";
+import CategoriesList from "../../components/CategoryList";
 import Footer from "../../components/Footer";
 import Loading from "../../components/Loading";
 import SuccessToast from "../../components/SuccessToast";
@@ -14,7 +14,7 @@ import ErrorToast from "../../components/ErrorToast";
 import {
   fetchBlogs,
   resetSuccessAndError as resetBlogSuccessAndError,
-} from "../../features/blogsSlice";
+} from "../../features/blogSlice";
 import {
   fetchCategories,
   resetSuccessAndError as resetCategoriesSuccessAndError,

@@ -18,7 +18,7 @@ import {
   setAddBlog,
   fetchBlogsByCategoryId,
   resetSuccessAndError as resetBlog,
-} from "../../features/blogsSlice";
+} from "../../features/blogSlice";
 import {
   fetchCategories,
   resetSuccessAndError as resetCategory,

@@ -4,21 +4,24 @@ import { Modal } from "bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
 import Categories from "../Categories";
+import FormImage from "../FormImage";
 
 import {
   createBlog,
   updateBlog,
   setAddBlog,
   setEditBlog,
-} from "../../features/blogsSlice";
+} from "../../features/blogSlice";
 
 export default function AddEditBlogModal() {
+  const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
 
   const { addBlog, editBlog } = useSelector((state) => state.blogs);
   const { categories } = useSelector((state) => state.categories);
 
   const [blog, setBlog] = useState();
+  const [blogImage, setBlogImage] = useState("");
 
   const modalEl = document.getElementById("addEditModal");
 
@@ -36,13 +39,26 @@ export default function AddEditBlogModal() {
     }
   }, [addBlog, editBlog, addEditModal]);
 
+  const buildFormData = () => {
+    const formData = new FormData();
+    formData.append("id", blog.id);
+    formData.append("image", blog.image);
+    formData.append("title", blog.title);
+    formData.append("description", blog.description);
+    formData.append("categories", JSON.stringify(blog.categories));
+    formData.append("content", JSON.stringify(blog.content));
+    formData.append("authorId", user?._id);
+    return formData;
+  };
+
   const onSubmit = (e) => {
     e?.preventDefault();
     if (isFormValid()) {
+      const formData = buildFormData();
       if (addBlog) {
-        dispatch(createBlog(blog));
+        dispatch(createBlog(formData));
       } else if (editBlog) {
-        dispatch(updateBlog(blog));
+        dispatch(updateBlog(formData));
       }
       resetBlog();
       addEditModal?.hide();
@@ -57,6 +73,14 @@ export default function AddEditBlogModal() {
       content: [],
       authorId: "",
     });
+  };
+
+  const onImageChange = (e) => {
+    if (e?.target?.files?.length) {
+      const file = e.target.files[0];
+      setBlogImage(URL.createObjectURL(file));
+      setBlog({ ...blog, image: file });
+    }
   };
 
   const isFormValid = () => {
@@ -84,7 +108,7 @@ export default function AddEditBlogModal() {
       <div
         className="modal fade"
         id="addEditModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="addEditModalLabel"
         aria-hidden="true"
       >
@@ -103,6 +127,7 @@ export default function AddEditBlogModal() {
             </div>
             <div className="modal-body">
               <form id="blogForm">
+                <FormImage image={blogImage} onChange={onImageChange} />
                 <div className="input-group mb-3">
                   <label
                     className="input-group-text"

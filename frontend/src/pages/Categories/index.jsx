@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import Navbar from "../../components/Navbar";
 import Heading from "../../components/Heading";
-import CategoryList from "../../components/CategoriesList";
+import CategoryList from "../../components/CategoryList";
 import Footer from "../../components/Footer";
 import Loading from "../../components/Loading";
 

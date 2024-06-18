@@ -2,7 +2,7 @@ import React, { useMemo, useEffect, useState } from "react";
 import { Modal } from "bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-import { deleteBlogById, setDeleteBlog } from "../../features/blogsSlice";
+import { deleteBlogById, setDeleteBlog } from "../../features/blogSlice";
 
 export default function DeleteBlogModal() {
   const dispatch = useDispatch();
