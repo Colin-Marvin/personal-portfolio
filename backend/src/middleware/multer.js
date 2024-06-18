@@ -1,22 +1,24 @@
 const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    switch (req.baseUrl) {
-      case "/api/blogs":
-        cb(null, "uploads/blogs/");
-        break;
-      case "/api/auth":
-        cb(null, "uploads/users/");
-        break;
-      default:
-        cb(null, "uploads/");
-        break;
+    const uploadPath = path.join(
+      __dirname,
+      "..",
+      "uploads",
+      req.baseUrl.includes("/blogs") ? "blogs" : "auth"
+    );
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+      console.log(`Created directory: ${uploadPath}`);
     }
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
-    let fileExt = file.originalname.split(".").pop();
-    let fileName = Date.now() + "." + fileExt;
+    const fileExt = file.originalname.split(".").pop();
+    const fileName = `${Date.now()}.${fileExt}`;
     cb(null, fileName);
   },
 });

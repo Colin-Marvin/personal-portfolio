@@ -1,14 +1,14 @@
 const { Storage } = require("@google-cloud/storage");
 
 const storage = new Storage({
-  projectId: "your-project-id",
-  keyFilename: "./gcp_key.json",
+  projectId: "ix-blog",
+  keyFilename: "/app/gcp_key.json",
 });
 
 const uploadToFirebaseStorage = async (filepath, fileName) => {
   try {
-    const gcs = storage.bucket("gs://your-bucket-name");
-    const storagepath = `your-bucket-name/${fileName}`;
+    const gcs = storage.bucket("gs://ix-blog-app-marvin");
+    const storagepath = `ix-blog-app-marvin/${fileName}`;
 
     const result = await gcs.upload(filepath, {
       destination: storagepath,
