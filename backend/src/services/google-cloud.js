@@ -4,7 +4,7 @@ const storage = new Storage({
   projectId: "ix-blog",
   credentials: process.env.GOOGLE_CREDENTIALS
     ? JSON.parse(process.env.GOOGLE_CREDENTIALS)
-    : undefined,
+    : null,
 });
 
 const uploadToFirebaseStorage = async (filepath, fileName) => {
