@@ -24,6 +24,14 @@ app.use("/api/blogs", blogsRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/auth", authRoutes);
 
+app.use(express.static(path.join(__dirname, "../../frontend/build")));
+
+app.get("*", (req, res) =>
+  res.sendFile(
+    path.resolve(__dirname, "..", "..", "frontend", "build", "index.html")
+  )
+);
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
