@@ -17,7 +17,7 @@ export default function AddEditBlogModal() {
   const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
 
-  const modalEl = document.getElementById("addEditBlogModal");
+  const modalEl = document.getElementById("addEditModal");
   const addEditModal = useMemo(() => {
     return modalEl ? new Modal(modalEl) : null;
   }, [modalEl]);
@@ -68,8 +68,8 @@ export default function AddEditBlogModal() {
       } else if (editBlog) {
         dispatch(updateBlog(formData));
       }
-      resetBlog();
       addEditModal?.hide();
+      resetBlog();
     }
   };
 
