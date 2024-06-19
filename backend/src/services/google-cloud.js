@@ -24,8 +24,4 @@ const uploadToFirebaseStorage = async (filepath, fileName) => {
   }
 };
 
-const GoogleCloudService = {
-  uploadToFirebaseStorage,
-};
-
-module.exports = GoogleCloudService;
+module.exports = { uploadToFirebaseStorage };
